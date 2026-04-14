@@ -21,7 +21,7 @@ Beginners who want a structured starting point for V60 brewing. The goal is to h
 
 The recipe, technique, and all brewing knowledge belong entirely to **James Hoffmann**. This page is simply an interactive presentation of his work to make it more accessible.
 
-I am not claiming any credit for the recipe, nor monetizing this in any way. If you haven't seen James Hoffmann's original **[video](https://www.youtube.com/watch?v=1oB1oDrDkHM&t=272s)**, go watch it, it's worth every second.
+I am not claiming any credit for the recipe, nor monetizing this in any way. If you haven't seen James Hoffmann's original **[video](https://www.youtube.com/watch?v=1oB1oDrDkHM)**, go watch it, it's worth every second.
 
 ## Disclaimer
 
