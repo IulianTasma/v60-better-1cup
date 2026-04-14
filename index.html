@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V60 Better 1 Cup – James Hoffmann</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0b08;
+    --card: #17120d;
+    --border: #2e2218;
+    --accent: #c9873a;
+    --accent2: #e8b87a;
+    --text: #f0e6d8;
+    --muted: #7a6a58;
+    --highlight: #2a1f12;
+    --green: #7daa7a;
+    --red: #c97a6a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    padding: 2rem 1rem 4rem;
+  }
+
+  /* grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.6;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  header {
+    margin-bottom: 2.5rem;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.8rem, 5vw, 2.6rem);
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent2);
+  }
+
+  .subtitle {
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+
+  /* CALCULATOR */
+  .calc-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.4rem 1.6rem;
+    margin-bottom: 1.8rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  .calc-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .slider-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .dose-display {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.8rem;
+    color: var(--accent2);
+    min-width: 70px;
+    line-height: 1;
+  }
+
+  .dose-display span {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    display: block;
+    margin-top: 2px;
+  }
+
+  input[type=range] {
+    flex: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+    cursor: pointer;
+    transition: transform 0.15s, background 0.15s;
+  }
+
+  input[type=range]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    background: var(--accent2);
+  }
+
+  .ratio-note {
+    margin-top: 0.8rem;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .ratio-note b {
+    color: var(--accent2);
+    font-weight: 500;
+  }
+
+  /* STATS ROW */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.8rem;
+    margin-bottom: 1.8rem;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .stat-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.1rem;
+    text-align: center;
+  }
+
+  .stat-val {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.6rem;
+    color: var(--accent2);
+    display: block;
+  }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-top: 3px;
+  }
+
+  /* TABLE */
+  .table-wrap {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1.8rem;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .table-header {
+    padding: 0.9rem 1.4rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .table-header .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .table-header h2 {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead tr {
+    background: var(--highlight);
+  }
+
+  th {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0.65rem 1.2rem;
+    text-align: left;
+    font-weight: 500;
+  }
+
+  th:last-child, td:last-child { text-align: right; }
+  th:nth-child(3), td:nth-child(3) { text-align: center; }
+
+  tbody tr {
+    border-top: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+
+  tbody tr:hover { background: var(--highlight); }
+
+  tbody tr.bloom-row { border-left: 3px solid var(--accent); }
+  tbody tr.pour-row { border-left: 3px solid #5a8f7a; }
+  tbody tr.action-row { border-left: 3px solid #5a6a8f; }
+
+  td {
+    padding: 0.75rem 1.2rem;
+    font-size: 0.82rem;
+    vertical-align: middle;
+  }
+
+  .time-cell {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent2);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .action-cell {
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  .action-cell .tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  .tag-bloom { background: #2d1f0a; color: var(--accent); }
+  .tag-pour  { background: #0a2018; color: var(--green); }
+  .tag-wait  { background: #0a0f1e; color: #7a8faa; }
+  .tag-final { background: #1a0a0a; color: var(--red); }
+
+  .water-cell {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 500;
+  }
+
+  .water-add  { color: var(--green); }
+  .water-total { color: var(--muted); font-size: 0.68rem; }
+  .water-none { color: var(--muted); }
+
+  /* TIPS */
+  .tips-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.4rem 1.6rem;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+
+  .tips-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .tip-row {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tip-row:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .tip-icon {
+    font-size: 1rem;
+    width: 28px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .tip-text {
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  .tip-text b { color: var(--accent2); font-weight: 500; }
+
+  /* DOSE ADAPT TABLE */
+  .adapt-wrap {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1.8rem;
+    animation: fadeUp 0.6s 0.35s ease both;
+  }
+
+  .adapt-wrap table th { text-align: center; }
+  .adapt-wrap table th:first-child { text-align: left; }
+  .adapt-wrap table td { text-align: center; }
+  .adapt-wrap table td:first-child {
+    text-align: left;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+
+  tr.active-dose {
+    background: var(--highlight) !important;
+  }
+
+  tr.active-dose td {
+    color: var(--accent2) !important;
+  }
+
+  tr.active-dose td:first-child {
+    color: var(--accent) !important;
+  }
+
+  /* TIMER */
+  .timer-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.4rem 1.6rem;
+    margin-bottom: 1.8rem;
+    animation: fadeUp 0.6s 0.25s ease both;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .timer-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+  }
+
+  .timer-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .timer-display {
+    font-family: 'DM Serif Display', serif;
+    font-size: 3.2rem;
+    color: var(--accent2);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .timer-bar-track {
+    width: 100%;
+    height: 2px;
+    background: var(--border);
+    border-radius: 1px;
+    margin-top: 0.6rem;
+    overflow: hidden;
+  }
+
+  .timer-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--accent);
+    border-radius: 1px;
+    transition: width 0.9s linear;
+  }
+
+  .timer-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .timer-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: var(--highlight);
+    color: var(--accent);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.55rem 1.1rem;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    min-width: 80px;
+  }
+
+  .timer-btn:hover { background: var(--accent); color: var(--bg); }
+  .timer-btn:disabled { opacity: 0.35; cursor: default; pointer-events: none; }
+
+  .timer-btn-reset { color: var(--muted); }
+  .timer-btn-reset:hover { background: var(--muted); color: var(--bg); }
+
+  tbody tr.active-step {
+    background: rgba(201, 135, 58, 0.13) !important;
+    border-left-color: var(--accent2) !important;
+  }
+
+  tbody tr.active-step .action-cell { color: var(--accent2); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 480px) {
+    .stats-row { grid-template-columns: repeat(3, 1fr); }
+    th, td { padding: 0.6rem 0.8rem; }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <header>
+    <div class="eyebrow">James Hoffmann · V60</div>
+    <h1><em>Better 1 Cup</em> Technique</h1>
+    <p class="subtitle">Generous bloom + 4 equal pours · optimized for small doses</p>
+  </header>
+
+  <!-- CALCULATOR -->
+  <div class="calc-card">
+    <div class="calc-label">Adjust coffee dose</div>
+    <div class="slider-row">
+      <div class="dose-display" id="doseDisplay">17<span>grams</span></div>
+      <input type="range" min="15" max="18" step="0.5" value="17" id="doseSlider">
+    </div>
+    <div class="ratio-note">Ratio 1:16.7 → total water: <b id="totalWater">284</b> ml · bloom: <b id="bloomWater">57</b> ml · each pour: <b id="pourWater">~57</b> ml</div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-box">
+      <span class="stat-val" id="statDose">17g</span>
+      <span class="stat-label">Coffee</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-val" id="statTotal">284ml</span>
+      <span class="stat-label">Total water</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-val">3:00</span>
+      <span class="stat-label">Target time</span>
+    </div>
+  </div>
+
+  <!-- TIMER -->
+  <div class="timer-card">
+    <div class="timer-left">
+      <div class="timer-label">Brew timer</div>
+      <div class="timer-display" id="timerDisplay">0:00</div>
+      <div class="timer-bar-track"><div class="timer-bar-fill" id="timerBarFill"></div></div>
+    </div>
+    <div class="timer-controls">
+      <button class="timer-btn" id="startStopBtn">Start</button>
+      <button class="timer-btn timer-btn-reset" id="resetBtn">Reset</button>
+    </div>
+  </div>
+
+  <!-- BREW TABLE -->
+  <div class="table-wrap">
+    <div class="table-header">
+      <div class="dot"></div>
+      <h2>Brew timeline</h2>
+    </div>
+    <table id="brewTable">
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Action</th>
+          <th>Add</th>
+          <th>Scale total</th>
+        </tr>
+      </thead>
+      <tbody id="brewBody">
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ADAPTATION TABLE -->
+  <div class="adapt-wrap">
+    <div class="table-header">
+      <div class="dot"></div>
+      <h2>Adaptation table 15–18g</h2>
+    </div>
+    <table id="adaptTable">
+      <thead>
+        <tr>
+          <th>Stage</th>
+          <th>15g</th>
+          <th>15.5g</th>
+          <th>16g</th>
+          <th>16.5g</th>
+          <th>17g</th>
+          <th>17.5g</th>
+          <th>18g</th>
+        </tr>
+      </thead>
+      <tbody id="adaptBody">
+      </tbody>
+    </table>
+  </div>
+
+  <!-- TIPS -->
+  <div class="tips-card">
+    <div class="tips-title">Adaptation notes</div>
+
+    <div class="tip-row">
+      <div class="tip-icon">⚖️</div>
+      <div class="tip-text"><b>Fixed ratio 1:16.7</b> – Multiply dose by 16.7 for total water. Bloom is always <b>~3.3× the dose</b>. The 4 pours split the remainder equally.</div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-icon">🌡️</div>
+      <div class="tip-text"><b>Water temperature:</b> Freshly boiled water (~95°C) for all roasts. No need to wait after boiling, unlike the Ultimate recipe.</div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-icon">⏱️</div>
+      <div class="tip-text"><b>Drain too slow (&gt;3:30)</b> → grind <b>coarser</b>. Drain too fast (&lt;2:30) → grind <b>finer</b>. Do not change water amounts.</div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-icon">🔄</div>
+      <div class="tip-text"><b>The final swirl</b> (at 2:00) is essential – it levels the coffee bed and ensures even extraction to the end. Give it 2–3 gentle rotations.</div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-icon">☕</div>
+      <div class="tip-text"><b>Difference from Ultimate:</b> The larger bloom (3.3×) and repeated small pours work better with doses under 20g, where the coffee bed is too small for the 2 large pours in the original recipe.</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function calc(dose) {
+    const total = Math.round(dose * 16.7);
+    const bloom = Math.round(dose * 3.33);
+    const remaining = total - bloom;
+    const pour = Math.round(remaining / 4);
+    // adjust last pour for rounding
+    const pour4 = remaining - pour * 3;
+
+    return {
+      dose,
+      total,
+      bloom,
+      pour1: pour,
+      pour2: pour,
+      pour3: pour,
+      pour4,
+      t1: bloom,
+      t2: bloom + pour,
+      t3: bloom + pour * 2,
+      t4: bloom + pour * 3,
+      t5: total
+    };
+  }
+
+  function renderBrewTable(d) {
+    const rows = [
+      { time: '0:00', cls: 'bloom-row', tag: 'bloom', action: 'Bloom – pre-wet + swirl', add: `+${d.bloom}ml`, total: `${d.bloom}ml` },
+      { time: '0:10', cls: 'action-row', tag: 'wait', action: 'Gently swirl V60 until all grounds are wet', add: '—', total: `${d.bloom}ml` },
+      { time: '0:45', cls: 'pour-row', tag: 'pour', action: 'Pour 1', add: `+${d.pour1}ml`, total: `${d.t2}ml` },
+      { time: '1:00', cls: 'action-row', tag: 'wait', action: 'Pause', add: '—', total: `${d.t2}ml` },
+      { time: '1:10', cls: 'pour-row', tag: 'pour', action: 'Pour 2', add: `+${d.pour2}ml`, total: `${d.t3}ml` },
+      { time: '1:20', cls: 'action-row', tag: 'wait', action: 'Pause', add: '—', total: `${d.t3}ml` },
+      { time: '1:30', cls: 'pour-row', tag: 'pour', action: 'Pour 3', add: `+${d.pour3}ml`, total: `${d.t4}ml` },
+      { time: '1:40', cls: 'action-row', tag: 'wait', action: 'Pause', add: '—', total: `${d.t4}ml` },
+      { time: '1:50', cls: 'pour-row', tag: 'pour', action: 'Pour 4', add: `+${d.pour4}ml`, total: `${d.t5}ml` },
+      { time: '2:00', cls: 'action-row', tag: 'final', action: 'Final swirl 2–3× · let drain completely', add: '—', total: `${d.t5}ml` },
+      { time: '3:00', cls: 'action-row', tag: 'wait', action: '✓ Done! Target: full drawdown', add: '—', total: `${d.t5}ml` },
+    ];
+
+    const tagClass = { bloom: 'tag-bloom', pour: 'tag-pour', wait: 'tag-wait', final: 'tag-final' };
+    const tagLabel = { bloom: 'Bloom', pour: 'Pour', wait: 'Pause', final: 'Final' };
+
+    document.getElementById('brewBody').innerHTML = rows.map(r => `
+      <tr class="${r.cls}">
+        <td class="time-cell">${r.time}</td>
+        <td class="action-cell"><span class="tag ${tagClass[r.tag]}">${tagLabel[r.tag]}</span>${r.action}</td>
+        <td class="water-cell ${r.add === '—' ? 'water-none' : 'water-add'}">${r.add}</td>
+        <td class="water-cell water-total">${r.total}</td>
+      </tr>
+    `).join('');
+  }
+
+  function renderAdaptTable(activeDose) {
+    const doses = [15, 15.5, 16, 16.5, 17, 17.5, 18];
+    const stages = [
+      { label: 'Bloom', fn: d => `${Math.round(d.bloom)}ml` },
+      { label: 'Pour 1', fn: d => `+${d.pour1}ml` },
+      { label: 'Pour 2', fn: d => `+${d.pour2}ml` },
+      { label: 'Pour 3', fn: d => `+${d.pour3}ml` },
+      { label: 'Pour 4', fn: d => `+${d.pour4}ml` },
+      { label: 'Total water', fn: d => `${d.total}ml` },
+    ];
+
+    const calcs = doses.map(calc);
+    const activeIdx = doses.indexOf(activeDose);
+
+    document.getElementById('adaptBody').innerHTML = stages.map(s => `
+      <tr ${s.label === 'Total water' ? 'style="border-top:2px solid var(--border)"' : ''}>
+        <td>${s.label}</td>
+        ${calcs.map((d, i) => `<td style="${i === activeIdx ? 'color:var(--accent2);font-weight:500' : ''}">${s.fn(d)}</td>`).join('')}
+      </tr>
+    `).join('');
+  }
+
+  function update(dose) {
+    const d = calc(dose);
+    document.getElementById('doseDisplay').innerHTML = `${dose}<span>grams</span>`;
+    document.getElementById('totalWater').textContent = d.total;
+    document.getElementById('bloomWater').textContent = d.bloom;
+    document.getElementById('pourWater').textContent = d.pour1;
+    document.getElementById('statDose').textContent = `${dose}g`;
+    document.getElementById('statTotal').textContent = `${d.total}ml`;
+    renderBrewTable(d);
+    renderAdaptTable(dose);
+  }
+
+  // TIMER
+  const ROW_TIMES  = [0,       10,     45,     60,     70,     80,     90,     100,    110,    120,     180];
+  // step types: bloom | wait | pour | wait | pour | wait | pour | wait | pour | final | done
+  const STEP_TYPES = ['bloom','wait','pour','wait','pour','wait','pour','wait','pour','final','done'];
+  const TOTAL_SECS = 180;
+  let timerInterval = null;
+  let timerElapsed = 0;
+  let timerRunning = false;
+  let lastStepIdx = -1;
+
+  function fmtTime(sec) {
+    const m = Math.floor(sec / 60);
+    const s = sec % 60;
+    return `${m}:${String(s).padStart(2, '0')}`;
+  }
+
+  function _audioCtx() {
+    return new (window.AudioContext || window.webkitAudioContext)();
+  }
+
+  // Short soft click – played on Start / Pause / Resume button press
+  function playButtonClick() {
+    try {
+      const ctx = _audioCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.type = 'sine';
+      osc.frequency.value = 440;
+      gain.gain.setValueAtTime(0.18, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+      osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.09);
+    } catch (e) {}
+  }
+
+  // Two rising tones – played when timer starts and Bloom step begins
+  function playBloomSound() {
+    try {
+      const ctx = _audioCtx();
+      [523, 659].forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.type = 'sine';
+        osc.frequency.value = freq;
+        const t = ctx.currentTime + i * 0.18;
+        gain.gain.setValueAtTime(0.32, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.22);
+        osc.start(t); osc.stop(t + 0.24);
+      });
+    } catch (e) {}
+  }
+
+  // Single high ping – played when Pause / Final swirl steps begin
+  function playPauseBeep() {
+    try {
+      const ctx = _audioCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.type = 'sine';
+      osc.frequency.value = 880;
+      gain.gain.setValueAtTime(0.35, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.18);
+      osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.2);
+    } catch (e) {}
+  }
+
+  // Longer flowing tone with slight detune – played when a Pour step begins
+  function playPourSound() {
+    try {
+      const ctx = _audioCtx();
+      // Main tone
+      const osc1 = ctx.createOscillator();
+      const osc2 = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc1.connect(gain); osc2.connect(gain); gain.connect(ctx.destination);
+      osc1.type = 'sine'; osc1.frequency.value = 660;
+      osc2.type = 'sine'; osc2.frequency.value = 664; // slight detune for warmth
+      gain.gain.setValueAtTime(0, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.3, ctx.currentTime + 0.05);
+      gain.gain.setValueAtTime(0.3, ctx.currentTime + 0.35);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.65);
+      osc1.start(ctx.currentTime); osc1.stop(ctx.currentTime + 0.7);
+      osc2.start(ctx.currentTime); osc2.stop(ctx.currentTime + 0.7);
+    } catch (e) {}
+  }
+
+  // Three descending tones – played when timer auto-stops at 3:00
+  function playEndSound() {
+    try {
+      const ctx = _audioCtx();
+      [523, 440, 349].forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.type = 'sine';
+        osc.frequency.value = freq;
+        const t = ctx.currentTime + i * 0.32;
+        gain.gain.setValueAtTime(0.4, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.28);
+        osc.start(t); osc.stop(t + 0.3);
+      });
+    } catch (e) {}
+  }
+
+  function playSoundForStep(idx) {
+    const type = STEP_TYPES[idx];
+    if (type === 'bloom')       playBloomSound();
+    else if (type === 'pour')   playPourSound();
+    else if (type === 'done')   { /* handled by stopTimer */ }
+    else                        playPauseBeep(); // wait + final
+  }
+
+  function highlightStep() {
+    const rows = document.querySelectorAll('#brewBody tr');
+    let activeIdx = -1;
+    ROW_TIMES.forEach((t, i) => { if (timerElapsed >= t) activeIdx = i; });
+    if (activeIdx !== lastStepIdx) {
+      playSoundForStep(activeIdx);
+      lastStepIdx = activeIdx;
+    }
+    rows.forEach((row, i) => row.classList.toggle('active-step', i === activeIdx));
+  }
+
+  function stopTimer() {
+    clearInterval(timerInterval);
+    timerInterval = null;
+    timerRunning = false;
+    document.getElementById('startStopBtn').textContent = 'Done';
+    document.getElementById('startStopBtn').disabled = true;
+    playEndSound();
+  }
+
+  function timerTick() {
+    timerElapsed++;
+    document.getElementById('timerDisplay').textContent = fmtTime(timerElapsed);
+    document.getElementById('timerBarFill').style.width = Math.min(timerElapsed / TOTAL_SECS * 100, 100) + '%';
+    highlightStep();
+    if (timerElapsed >= TOTAL_SECS) stopTimer();
+  }
+
+  document.getElementById('startStopBtn').addEventListener('click', () => {
+    playButtonClick();
+    if (timerRunning) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      timerRunning = false;
+      document.getElementById('startStopBtn').textContent = 'Resume';
+    } else {
+      timerInterval = setInterval(timerTick, 1000);
+      timerRunning = true;
+      document.getElementById('startStopBtn').textContent = 'Pause';
+    }
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    clearInterval(timerInterval);
+    timerInterval = null;
+    timerRunning = false;
+    timerElapsed = 0;
+    lastStepIdx = -1;
+    document.getElementById('timerDisplay').textContent = '0:00';
+    document.getElementById('timerBarFill').style.width = '0%';
+    document.getElementById('startStopBtn').textContent = 'Start';
+    document.getElementById('startStopBtn').disabled = false;
+    document.querySelectorAll('#brewBody tr').forEach(r => r.classList.remove('active-step'));
+  });
+
+  const slider = document.getElementById('doseSlider');
+  slider.addEventListener('input', () => update(parseFloat(slider.value)));
+  update(17);
+</script>
+</body>
+</html>
